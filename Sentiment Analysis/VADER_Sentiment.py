@@ -4,7 +4,7 @@ VADER - Sentiment Analysis tool
     - Takes input file with text columns
     - Returns POS/NEG/NEUTRAL/COMP scores
         - refer to VADER docs on git for more info
-        
+
     - Variables to use
         - fn = the filename and path of imported file
         - col = targets columns analyzed
@@ -17,7 +17,9 @@ VADER - Sentiment Analysis tool
 
 import pandas as pd
 import numpy as np
+
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+analyzer = SentimentIntensityAnalyzer()
 
 '''
 Setting filenames --
@@ -49,7 +51,6 @@ data_OE = df.loc[:, col]
 - takes previous inputs
     -> then merges with imported file
 '''
-analyzer = SentimentIntensityAnalyzer()
 
 data_OE = data_OE.fillna('0')
 
