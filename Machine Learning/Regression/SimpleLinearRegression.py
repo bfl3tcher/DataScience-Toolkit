@@ -11,7 +11,7 @@ import pandas as pd
 
 
 # import data
-fn = 'USA_Housing.csv'    # filename
+fn = ''    # filename
 df = pd.read_csv(fn)    # save file as df
 
 
@@ -27,7 +27,7 @@ Linear Model -
 
 - Simple Linear Regression - save one variable in features
 - Multiple Linear Regression - save multiple vars in features
--- Remove or add as you test and evaluate the model -- 
+-- Remove or add as you test and evaluate the model --
 '''
 
 
@@ -38,7 +38,7 @@ X = df[features]    # save predictors as X
 
 
 # target/prediction
-target = 'Price'    # target variable name
+target = ''    # target variable name
 y = df[target]    # save taret as Y
 
 
