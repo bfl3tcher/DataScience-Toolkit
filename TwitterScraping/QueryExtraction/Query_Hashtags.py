@@ -8,19 +8,22 @@ Twitter Scraping with Twython - Hashtags
             - must target hashtag
             - must specify date
     -- Hashtag variable targets which hashtag is searched
+    -- Sentiment Analysis built in
 
 '''
-# start date
-pull_start = '2019-05-16'
+# setting start/end dates for query
+pull_start = '2019-05-16'    # start date
+pull_end = '2019-05-17'    # end date
 
-# end date
-pull_end = '2019-05-17'
 
-export_fn = 'tweets'+pull_start+'.csv'
-
-# Create our query
+# Hashtag being searched for
 hashtags = ['#Trump']
 
+
+# export filename
+export_fn = 'tweets'+pull_start+'.csv'
+
+# query submitted
 query = {
     'q': hashtags,
     'count':100,
@@ -90,8 +93,76 @@ for status in tweets.search(**query)['statuses']:
 
 
 # Structure data in a pandas DataFrame for easier manipulation
-df_day = pd.DataFrame(data=dict_)
+df = pd.DataFrame(data=dict_)
+
+
+# sentiment analysis tools
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+analyzer = SentimentIntensityAnalyzer()
+
+# dataframe fed into sentiment analysis
+col = ['usr_user', 'twt_text']    # columns
+data_OE = df.loc[:, col]
+
+data_OE = data_OE.fillna('0')
+
+columns = []
+for i in data_OE.columns:
+    if i != 'usr_user':
+        columns.append(i+'_cmp')
+        columns.append('pos_%s'%i)
+        columns.append('neg_%s'%i)
+        columns.append('neu_%s'%i)
+
+i = 0
+df_dict = {}
+for i in np.arange(len(columns)):
+    for j in columns:
+        df_dict[j]=[]
+
+df_empty = pd.DataFrame(df_dict)
+df_empty = df_empty[columns]
+
+compound_list = []
+positive_list = []
+negative_list = []
+neutral_list = []
+
+
+i = 0;
+for i in range(0,len(list(data_OE))-1):
+    for text in data_OE.iloc[:,i+1]:
+
+        # Run Vader Analysis on each tweet
+        compound = analyzer.polarity_scores(text)["compound"]
+        pos = analyzer.polarity_scores(text)["pos"]
+        neu = analyzer.polarity_scores(text)["neu"]
+        neg = analyzer.polarity_scores(text)["neg"]
+
+        # Add each value to the appropriate array
+        compound_list.append(compound)
+        positive_list.append(pos)
+        negative_list.append(neg)
+        neutral_list.append(neu)
+
+    # print(compound_list)
+    j = (i*4);
+    k = (i*4)+1;
+    l = (i*4)+2;
+    m = (i*4)+3;
+    df_empty.iloc[:,j] = compound_list
+    df_empty.iloc[:,k] = positive_list
+    df_empty.iloc[:,l] = negative_list
+    df_empty.iloc[:,m] = neutral_list
+    compound_list = []
+    positive_list = []
+    negative_list = []
+    neutral_list = []
+
+# merges sentiment results into dataframe
+df = pd.merge(df,df_empty, left_index=True, right_index=True)
 
 
 # export
-df_day.to_csv(export_fn, index=False)
+# df_day.to_csv(export_fn, index=False)
+df.head()
