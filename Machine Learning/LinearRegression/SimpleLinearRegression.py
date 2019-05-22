@@ -101,11 +101,15 @@ from sklearn import metrics
 
 # The coefficients
 print('\n-----------------------------------------------------')
+print('\tTarget Information')
+print(df.median_house_value.describe())
+
+print('\n-----------------------------------------------------')
 print('\tMetrics')
 print('Intercept:', lm.intercept_)    # LM intercept
-print('Variance score (R2): %.2f' % r2_score(y_test, predictions))
+print('Variance score (R2): %.2f' % metrics.r2_score(y_test, predictions))
 print('\n\tFeatures')
-coef = pd.DataFrame(data=list(lm.coef_)[0], index=X.columns, columns=['Coef'])
+coef = pd.DataFrame(data=list(lm.coef_), index=X.columns, columns=['Coef'])
 print(coef.head())
 print('\n-----------------------------------------------------')
 print('MAE: ', metrics.mean_absolute_error(y_test, predictions))    # Mean Absolute Error
@@ -115,7 +119,7 @@ print('\n-----------------------------------------------------')
 
 
 # graphing predicted vs actual
-plt.scatter(x=predictions,y=y_test)
+plt.scatter(predictions,y_test, )
 plt.title('Model Evaluation - Predicted vs. Actual')
 plt.xlabel('Predicted')
 plt.ylabel('Real')
