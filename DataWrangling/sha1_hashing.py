@@ -25,11 +25,11 @@ df = pd.read_csv(fn)
 # specifies to sha1
 def sha1_hash(dataframe, source_column, salt, new_column):
     # salt ad id
-    salt = salt    # apply salt
-    dataframe[source_column] = dataframe[source_column].apply(lambda x: salt+x)    # set as column
+    salt = str(salt)    # apply salt
+    dataframe[str(source_column)] = dataframe[str(source_column)].apply(lambda x: salt+x)    # set as column
 
     # create hash column
-    dataframe[new_column] = [hashlib.sha1(str.encode(str(i))).hexdigest() for i in dataframe[source_column]]
+    dataframe[str(new_column)] = [hashlib.sha1(str.encode(str(i))).hexdigest() for i in dataframe[str(source_column)]]
 
 
 sha1_hash(
