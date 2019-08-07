@@ -10,7 +10,7 @@ df = pd.read_csv(fn)
 
 ''' set functions  '''
 # report functions
-def freq_report(dataframe, var):
+def var_report(dataframe, var):
 
     # var name
     print('Variable - ' + str(var) + '\n')
@@ -24,12 +24,12 @@ def freq_report(dataframe, var):
     print('# Total - ' + str(total))
 
     # value counts
-    if unique < 35:
+    if unique < 25:
         print('\n' + str(var) + ' FREQUENCY TOTALS - VERBOSE')
         print(dataframe[var].value_counts(dropna=False))
         print('----------')
 
-    elif unique > 35:
+    elif unique > 25:
         print('\n' + str(var) + ' FREQUENCY TOTALS - top 20')
         print(dataframe[var].value_counts(dropna=False).head(20))
         print('----------')
@@ -37,13 +37,13 @@ def freq_report(dataframe, var):
 
 
 
-def col_feeder(dataframe):
+def freq_report(dataframe):
 
     for var in dataframe.columns:
 
-        freq_report(dataframe, var)
+        var_report(dataframe, var)
 
 
 
 ''' Call and print report functions '''
-col_feeder(dataframe)
+freq_report(dataframe)
