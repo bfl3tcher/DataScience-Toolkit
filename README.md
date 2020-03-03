@@ -60,13 +60,10 @@ TODO LIST --
 
 
 2. DataProcessing/Reporting tools
-    - Frequency Report -
     - Column Mismatch Functions
     - BrandCoding
     - LocationCounting
-    - Batch Importing
     - Recoding - demographics, state information, etc.
-
 
 
 WISHLIST -
